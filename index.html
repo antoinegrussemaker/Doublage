@@ -53,6 +53,25 @@ details summary{cursor:pointer;color:var(--mu);font-size:14px;min-height:44px;di
 .cue{background:var(--s);border:1px solid var(--ln);border-radius:16px;padding:12px;display:flex;flex-direction:column;gap:8px}
 .cue label{font-size:12px;color:var(--mu);display:flex;flex-direction:column;gap:4px;flex:1}
 .empty{text-align:center;color:var(--mu);padding:24px 8px;font-size:14px}
+.two{display:flex;flex-direction:column;gap:16px}
+.colA,.colB{display:flex;flex-direction:column;gap:16px;min-width:0}
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:var(--s);border:1px solid var(--ln);border-radius:16px;padding:4px}
+.tabs button{min-height:44px;border:none;background:transparent;border-radius:12px;font-size:15px;color:var(--mu)}
+.tabs button.on{background:var(--tx);color:var(--bg)}
+.grid{display:grid;grid-template-columns:1fr;gap:12px}
+.thumb{aspect-ratio:16/9;border-radius:12px;background:var(--s2) center/cover no-repeat}
+.narrow{display:flex;flex-direction:column;gap:16px}
+@media (min-width:700px),(orientation:landscape) and (min-width:560px){
+html,body{font-size:17px}
+#app{max-width:1100px;padding:24px 28px 56px}
+.two{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:24px;align-items:start}
+.colA.sticky{position:sticky;top:16px}
+.grid{grid-template-columns:repeat(auto-fill,minmax(300px,1fr))}
+h1{font-size:34px}
+.stage{max-height:calc(100vh - 150px)}
+.narrow{max-width:640px;margin:0 auto;width:100%}
+.tabs{max-width:460px}
+}
 </style>
 </head>
 <body>
@@ -148,9 +167,37 @@ var S={view:'home',pid:null,i:0,confirm:null};
 var token=0;
 function cur(){for(var i=0;i<PROJ.length;i++)if(PROJ[i].id===S.pid)return PROJ[i];return null;}
 function goto(view,pid,i){stopPlay();FIN.playing=false;S.view=view;if(pid)S.pid=pid;S.i=i||0;S.confirm=null;return render();}
-function render(){var tk=++token;var f={home:vHome,prep:vPrep,team:vTeam,seq:vSeq,fin:vFinal}[S.view];window.scrollTo(0,0);return Promise.resolve(f(tk));}
+function render(){var tk=++token;var f={home:vHome,lib:vLib,prep:vPrep,team:vTeam,seq:vSeq,fin:vFinal}[S.view];window.scrollTo(0,0);return Promise.resolve(f(tk));}
 
 /* ---------- accueil ---------- */
+function brand(){return '<div class="row" style="flex:none"><div class="av" style="background:#FF5A5F;border-radius:11px;width:36px;height:36px">'+ic('mic',20,'#16131E')+'</div><h2 style="flex:6">Doublage</h2></div>';}
+function tabsHTML(a){return '<div class="tabs"><button class="'+(a==='home'?'on':'')+'" data-act="tab" data-t="home">Extraits</button><button class="'+(a==='lib'?'on':'')+'" data-act="tab" data-t="lib">Mes doublages</button></div>';}
+var THUMB={};
+function thumb(p){
+  if(THUMB[p.id])return Promise.resolve(THUMB[p.id]);
+  return videoUrl(p).then(function(url){return new Promise(function(res){
+    if(!url){res(null);return;}
+    var v=document.createElement('video');v.muted=true;v.playsInline=true;v.preload='auto';v.src=url;
+    var fin=false;function end(u){if(fin)return;fin=true;res(u);}
+    setTimeout(function(){end(null);},6000);
+    var t=p.cues.length?Math.max(0,p.cues[0].start):0.5;
+    v.addEventListener('loadedmetadata',function(){try{v.currentTime=Math.max(0,Math.min(t,(v.duration||t)-0.1));}catch(e){end(null);}});
+    v.addEventListener('seeked',function(){try{var c=document.createElement('canvas');c.width=320;c.height=180;var x=c.getContext('2d');var w=v.videoWidth||320,h=v.videoHeight||180;var r=Math.min(320/w,180/h);x.fillStyle='#000';x.fillRect(0,0,320,180);x.drawImage(v,(320-w*r)/2,(180-h*r)/2,w*r,h*r);var u=c.toDataURL('image/jpeg',0.6);THUMB[p.id]=u;end(u);}catch(e){end(null);}});
+  });});
+}
+function vLib(){
+  stopPlay();
+  var list=PROJ.filter(function(p){return done(p)>0;});
+  var cards=list.map(function(p){
+    var d=done(p),n=p.cues.length,full=d===n;
+    var who=p.persons.map(function(q){return esc(q.name);}).join(', ');
+    return '<div class="card"><div class="thumb" data-th="'+p.id+'"></div><div class="ct">'+esc(p.title)+'</div><div class="note">'+(full?'Doublage complet':d+' séquence'+(d>1?'s':'')+' sur '+n)+' · '+who+'</div>'+
+      '<div class="row"><button class="pri sm" data-act="fin" data-id="'+p.id+'">'+ic('play',18,'#16131E',true)+' Lecture</button>'+(full?'':'<button class="sm" data-act="resume" data-id="'+p.id+'">Continuer</button>')+'</div></div>';
+  }).join('');
+  app.innerHTML=brand()+tabsHTML('lib')+'<h1>Mes doublages</h1><p class="mu">Les extraits où au moins une séquence est enregistrée.</p>'+
+    (cards?'<div class="grid">'+cards+'</div>':'<div class="empty">Aucun doublage enregistré pour l\u2019instant. Ajoute un extrait, puis enregistre au moins une séquence.</div>');
+  list.forEach(function(p){thumb(p).then(function(u){var el=$('[data-th="'+p.id+'"]');if(el&&u)el.style.backgroundImage='url('+u+')';});});
+}
 function done(p){return p.cues.filter(function(c){return c.rec;}).length;}
 function vHome(){
   var cards=PROJ.map(function(p){
@@ -160,10 +207,10 @@ function vHome(){
       '<div class="row"><button class="sm" data-act="prep" data-id="'+p.id+'">Répliques</button><button class="sm" data-act="team" data-id="'+p.id+'"'+(n?'':' disabled')+'>Doubler</button><button class="sm" data-act="fin" data-id="'+p.id+'"'+(d?'':' disabled')+'>Lecture</button>'+
       '<button class="sm red" data-act="del" data-id="'+p.id+'" aria-label="Supprimer l’extrait">'+(S.confirm===p.id?'Sûr ?':ic('trash',18,'#FF5A5F'))+'</button></div></div>';
   }).join('');
-  app.innerHTML='<div class="row" style="flex:none"><div class="av" style="background:#FF5A5F;border-radius:11px;width:36px;height:36px">'+ic('mic',20,'#16131E')+'</div><h2 style="flex:6">Doublage</h2></div>'+
+  app.innerHTML=brand()+tabsHTML('home')+
    '<h1>Tes extraits</h1><p class="mu">Charge un extrait, ajoute les répliques, puis doublez-les séquence par séquence.</p>'+
    (persist?'':'<div class="warn">La sauvegarde automatique n’est pas disponible ici : tes extraits disparaîtront si tu fermes la page.</div>')+
-   (cards||'<div class="empty">Aucun extrait pour l’instant.</div>')+
+   (cards?'<div class="grid">'+cards+'</div>':'<div class="empty">Aucun extrait pour l\u2019instant.</div>')+
    '<label class="btn pri">'+ic('plus',20,'#16131E')+' Ajouter un extrait<input type="file" accept="video/*" id="addv" hidden></label>';
 }
 
@@ -174,13 +221,13 @@ function vPrep(tk){
   return videoUrl(p).then(function(url){
     if(tk!==token)return;
     app.innerHTML='<div class="top"><button data-act="home" aria-label="Retour">'+ic('back',22,'#F5F1EA')+'</button><div style="flex:1"><input type="text" id="ttl" aria-label="Titre de l’extrait" value="'+esc(p.title)+'"></div></div>'+
-     '<div class="stage"><video id="v" controls playsinline preload="auto" src="'+url+'"></video></div>'+
+     '<div class="two"><div class="colA sticky"><div class="stage"><video id="v" controls playsinline preload="auto" src="'+url+'"></video></div>'+
      '<div class="row"><button data-act="addcue">'+ic('plus',18,'#F5F1EA')+' Réplique ici</button><label class="btn" style="font-size:15px">Importer .srt<input type="file" accept=".srt,text/plain,application/x-subrip" id="srt" hidden></label></div>'+
-     '<p class="note">Lance la vidéo, mets en pause là où le personnage commence à parler, puis touche « Réplique ici ». Écris ce qu’il doit dire. Si tu as un fichier de sous-titres (.srt), importe-le : les répliques se remplissent toutes seules.</p>'+
+     '<p class="note">Lance la vidéo, mets en pause là où le personnage commence à parler, puis touche « Réplique ici ». Écris ce qu’il doit dire. Si tu as un fichier de sous-titres (.srt), importe-le : les répliques se remplissent toutes seules.</p></div><div class="colB">'+
      '<h2>Personnages</h2><div id="chars"></div>'+
      '<h2>Répliques</h2><div id="cues"></div>'+
      '<label class="row note" style="gap:10px;align-items:center"><input type="checkbox" id="keep" style="flex:none;width:22px;height:22px"'+(p.keep?' checked':'')+'><span>Garder le son de la vidéo pendant le doublage (si les voix sont déjà retirées)</span></label>'+
-     '<button class="pri" data-act="toteam">Continuer</button><div id="pmsg" class="note"></div>';
+     '<button class="pri" data-act="toteam">Continuer</button><div id="pmsg" class="note"></div></div></div>';
     renderChars(p);renderCues(p);
   });
 }
@@ -229,7 +276,7 @@ function vTeam(){
   var p=cur();if(!p)return goto('home');
   if(!p.cues.length)return goto('prep');
   var n=p.persons.length;
-  app.innerHTML='<div class="top"><button data-act="home" aria-label="Retour">'+ic('back',22,'#F5F1EA')+'</button><span class="mu s" style="flex:1;text-align:right">'+esc(p.title)+'</span></div>'+
+  app.innerHTML='<div class="narrow"><div class="top"><button data-act="home" aria-label="Retour">'+ic('back',22,'#F5F1EA')+'</button><span class="mu s" style="flex:1;text-align:right">'+esc(p.title)+'</span></div>'+
    '<h1>Combien de personnes doublent ?</h1>'+
    '<div class="pills">'+[1,2,3,4].map(function(k){return '<button class="pill'+(k===n?' on':'')+'" data-act="n" data-n="'+k+'" aria-label="'+k+' personne'+(k>1?'s':'')+'">'+k+'</button>';}).join('')+'</div>'+
    '<p class="note">Cet extrait a '+p.chars.length+' personnage'+(p.chars.length>1?'s':'')+'. S’il y a moins de doubleurs, certains jouent plusieurs rôles.</p>'+
@@ -239,7 +286,7 @@ function vTeam(){
    (p.chars.length>1&&n>1?'<details><summary>Changer la répartition</summary><div style="display:flex;flex-direction:column;gap:8px">'+p.chars.map(function(c,ci){
      return '<div class="row"><span style="flex:1">'+esc(c)+'</span><select data-f="assign" data-ci="'+ci+'" aria-label="Doubleur pour '+esc(c)+'" style="flex:1">'+p.persons.map(function(q,i){return '<option value="'+i+'"'+((p.assign[ci]||0)===i?' selected':'')+'>'+esc(q.name)+'</option>';}).join('')+'</select></div>';
    }).join('')+'</div></details>':'')+
-   '<button class="pri" data-act="go">C’est parti '+ic('chk',20,'#16131E')+'</button>';
+   '<button class="pri" data-act="go">C\u2019est parti '+ic('chk',20,'#16131E')+'</button></div>';
 }
 
 /* ---------- séquence ---------- */
@@ -261,9 +308,9 @@ function vSeq(tk){
     SQ.mode=c.rec?'review':'ready';SQ.msg=MICBLOCK?micMsg():'';SQ.stop=null;
     app.innerHTML='<div class="top"><button data-act="totem" aria-label="Retour">'+ic('back',22,'#F5F1EA')+'</button><span class="mu s" style="flex:1">'+esc(p.title)+'</span><b style="font:700 16px var(--hd)">Séquence '+(S.i+1)+' sur '+p.cues.length+'</b></div>'+
      chipsHTML(p,S.i)+
-     '<div class="stage"><video id="v" playsinline muted preload="auto" src="'+url+'"></video><div class="rc" id="rc">REC</div><div class="ov"><span class="tag" id="tg" style="background:'+col+'">'+esc(pname(p,c))+' · '+esc(p.chars[c.char]||'')+'</span><div class="sub" id="sb"></div></div><div class="bar"><i id="pg"></i></div></div>'+
+     '<div class="two"><div class="colA"><div class="stage"><video id="v" playsinline muted preload="auto" src="'+url+'"></video><div class="rc" id="rc">REC</div><div class="ov"><span class="tag" id="tg" style="background:'+col+'">'+esc(pname(p,c))+' · '+esc(p.chars[c.char]||'')+'</span><div class="sub" id="sb"></div></div><div class="bar"><i id="pg"></i></div></div></div><div class="colB">'+
      '<div class="card turn"><div class="av" style="background:'+col+'">'+(pi+1)+'</div><div><b style="font:700 18px var(--hd)">C’est au tour de '+esc(pname(p,c))+'</b><div class="note">Dis la réplique quand elle se colore.</div></div></div>'+
-     '<div id="ctl"></div><div id="msg" class="note"></div>';
+     '<div id="ctl"></div><div id="msg" class="note"></div></div></div>';
     var v=$('#v');var dur=0;
     meta(v).then(function(){dur=v.duration;var sg=segOf(c,dur);return seek(v,sg.a).then(function(){frame(sg.a);});});
     ctl();
@@ -340,13 +387,13 @@ function vFinal(tk){
   var p=cur();if(!p)return goto('home');
   return videoUrl(p).then(function(url){
     if(tk!==token)return;
-    app.innerHTML='<div class="top"><button data-act="home" aria-label="Retour">'+ic('back',22,'#F5F1EA')+'</button><span class="mu s" style="flex:1;text-align:right">'+esc(p.title)+'</span></div>'+
-     '<h1>Ton doublage, avec toutes les voix</h1>'+
+    app.innerHTML='<div class="top"><button data-act="lib" aria-label="Retour à mes doublages">'+ic('back',22,'#F5F1EA')+'</button><span class="mu s" style="flex:1;text-align:right">'+esc(p.title)+'</span></div>'+
+     '<h1>Ton doublage, avec toutes les voix</h1><div class="two"><div class="colA">'+
      '<div class="stage"><video id="v" playsinline preload="auto" src="'+url+'"></video><div class="ov" id="ov" style="display:none"><span class="tag" id="tg"></span><div class="sub" id="sb"></div></div><div class="bar"><i id="pg"></i></div></div>'+
-     '<input type="range" id="sk" min="0" max="1" step="0.1" value="0" aria-label="Position dans l’extrait">'+
+     '<input type="range" id="sk" min="0" max="1" step="0.1" value="0" aria-label="Position dans l\u2019extrait"></div><div class="colB">'+
      '<p class="note">Touche une séquence pour l’écouter ou la refaire.</p>'+chipsHTML(p,-1)+
      '<div class="legend">'+p.persons.map(function(q,i){return '<span><b style="background:'+P[i%4]+'"></b>'+esc(q.name)+'</span>';}).join('')+'</div>'+
-     '<div class="row"><button style="flex:none;width:56px;padding:0" data-act="frestart" aria-label="Depuis le début">'+ic('redo',22,'#F5F1EA')+'</button><button class="pri" id="fp" data-act="fplay">'+ic('play',22,'#16131E',true)+' Lecture</button></div><div id="msg" class="note"></div>';
+     '<div class="row"><button style="flex:none;width:56px;padding:0" data-act="frestart" aria-label="Depuis le début">'+ic('redo',22,'#F5F1EA')+'</button><button class="pri" id="fp" data-act="fplay">'+ic('play',22,'#16131E',true)+' Lecture</button></div><div id="msg" class="note"></div></div></div>';
     var v=$('#v');v.muted=!p.keep;
     meta(v).then(function(){$('#sk').max=v.duration||1;fdraw(0);});
   });
@@ -371,6 +418,9 @@ function fplay(from){
 function onAct(el){
   var a=el.getAttribute('data-act');var id=el.getAttribute('data-id');var p=cur();
   if(a==='home')return goto('home');
+  if(a==='lib')return goto('lib');
+  if(a==='tab')return goto(el.getAttribute('data-t'));
+  if(a==='resume'){var rp=PROJ.filter(function(x){return x.id===id;})[0];var r0=0;for(var q=0;q<rp.cues.length;q++){if(!rp.cues[q].rec){r0=q;break;}}return goto('seq',id,r0);}
   if(a==='prep')return goto('prep',id);
   if(a==='team'){var q=PROJ.filter(function(x){return x.id===id;})[0];return goto(q&&q.persons&&q.persons.length?'team':'team',id);}
   if(a==='fin')return goto('fin',id);
