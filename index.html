@@ -4,71 +4,62 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Doublage de dessins animés</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0E0E0E;--s:#0E0E0E;--s2:#1E1E1B;--ln:#F5F5F0;--tx:#F5F5F0;--mu:#A8A8A0;--rec:#E5312B;--ye:#FFD400;--hd:'Bebas Neue',Impact,'Arial Narrow',sans-serif;--mono:'Courier Prime','Courier New',monospace}
+:root{--bg:#16131E;--s:#221E2E;--s2:#2C2739;--ln:#3A3449;--tx:#F5F1EA;--mu:#B9B2C9;--rec:#FF5A5F;--hd:'Space Grotesk',-apple-system,system-ui,sans-serif}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;background:var(--bg);color:var(--tx);font-family:var(--mono);font-size:16px}
+html,body{margin:0;background:var(--bg);color:var(--tx);font-family:-apple-system,system-ui,'Segoe UI',Roboto,sans-serif;font-size:16px}
 #app{max-width:480px;margin:0 auto;padding:16px 16px 48px;display:flex;flex-direction:column;gap:16px;min-height:100vh}
-#app::before{content:'';flex:none;height:34px;border:2px solid #F5F5F0;transform:rotate(-1deg);margin-bottom:4px;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='34' viewBox='0 0 32 34'><rect width='32' height='34' fill='%23F5F5F0'/><polygon points='16,0 32,0 16,34 0,34' fill='%230E0E0E'/></svg>") repeat-x}
-h1{font:400 42px/1 var(--hd);letter-spacing:.03em;margin:0}
-h2{font:400 26px/1 var(--hd);letter-spacing:.04em;margin:0}
-p{margin:0;line-height:1.5}
+h1{font:700 30px/1.1 var(--hd);letter-spacing:-.02em;margin:0}
+h2{font:700 18px var(--hd);margin:0}
+p{margin:0;line-height:1.45}
 .mu{color:var(--mu)}.s{font-size:13px}
-button,.btn{font:400 23px/1 var(--hd);letter-spacing:.06em;min-height:52px;border-radius:0;border:2px solid #F5F5F0;background:transparent;color:var(--tx);padding:0 16px;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;text-align:center;width:100%}
-button.sm,.btn.sm{min-height:44px;font-size:19px;padding:0 12px;width:auto}
-.pri{background:#F5F5F0;color:#0E0E0E}
-.red{border-color:var(--rec);color:var(--rec);background:transparent}
-button:disabled{opacity:.35}
-input[type=text],input[type=number],select,textarea{width:100%;min-height:44px;border-radius:0;border:2px solid #F5F5F0;background:transparent;color:var(--tx);padding:8px 12px;font:400 16px var(--mono)}
-select option{background:#0E0E0E;color:#F5F5F0}
+button,.btn{font:600 17px var(--hd);min-height:52px;border-radius:16px;border:1px solid var(--ln);background:var(--s);color:var(--tx);padding:0 16px;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;text-align:center;width:100%}
+button.sm,.btn.sm{min-height:44px;font-size:14px;border-radius:12px;padding:0 12px;width:auto}
+.pri{background:var(--tx);color:var(--bg);border-color:var(--tx)}
+.red{border:2px solid var(--rec);color:var(--rec);background:transparent}
+button:disabled{opacity:.4}
+input[type=text],input[type=number],select,textarea{width:100%;min-height:44px;border-radius:12px;border:1px solid var(--ln);background:var(--s);color:var(--tx);padding:8px 12px;font:500 16px -apple-system,system-ui,sans-serif}
 textarea{min-height:70px;resize:vertical}
-input[type=range],input[type=checkbox]{accent-color:#FFD400}
 .row{display:flex;gap:8px;align-items:center}.row>*{flex:1}
 .top{display:flex;align-items:center;justify-content:space-between;gap:10px}
 .top button{flex:none;width:44px;padding:0}
-.card{background:transparent;border:2px solid #F5F5F0;border-radius:0;padding:12px;display:flex;flex-direction:column;gap:10px}
-.ct{font:400 28px/1 var(--hd);letter-spacing:.04em}
-.note{font-size:13px;line-height:1.5;color:var(--mu)}
-.warn{background:#1E1A04;border:2px solid #FFD400;padding:10px 12px;font-size:13px;line-height:1.5;color:#FFD400}
-.stage{position:relative;aspect-ratio:16/9;border:2px solid #F5F5F0;background:#000;overflow:hidden;flex:none}
+.card{background:var(--s);border:1px solid var(--ln);border-radius:18px;padding:14px;display:flex;flex-direction:column;gap:10px}
+.ct{font:700 19px var(--hd)}
+.note{font-size:13px;line-height:1.45;color:var(--mu)}
+.warn{background:#3A2A1E;border:1px solid #7A5A2E;border-radius:12px;padding:10px 12px;font-size:13px;line-height:1.45;color:#F3D9B1}
+.stage{position:relative;aspect-ratio:16/9;border-radius:18px;background:#000;overflow:hidden;flex:none}
 .stage video{width:100%;height:100%;object-fit:contain;background:#000;display:block}
-.ov{position:absolute;left:0;right:0;bottom:0;background:#0E0E0EEE;padding:8px 10px 12px;display:flex;flex-direction:column;gap:5px;pointer-events:none}
-.tag{align-self:flex-start;font:700 11px var(--mono);letter-spacing:.06em;text-transform:uppercase;padding:1px 7px;color:#0E0E0E}
-.sub{font:700 16px/1.3 var(--mono);color:#FFD400}
-.bar{position:absolute;left:0;right:0;bottom:0;height:6px;background:#4A4A45}.bar i{display:block;height:100%;width:0;background:#FFD400}
-.rc{position:absolute;top:10px;left:10px;background:var(--rec);color:#F5F5F0;font:400 18px/1 var(--hd);letter-spacing:.08em;padding:5px 10px;display:none}
+.ov{position:absolute;left:8px;right:8px;bottom:14px;background:#16131EE6;border-radius:12px;padding:8px 12px;display:flex;flex-direction:column;gap:6px;pointer-events:none}
+.tag{align-self:flex-start;font:700 11px var(--hd);padding:2px 8px;border-radius:6px;color:var(--bg)}
+.sub{font-size:17px;line-height:1.3;font-weight:600}
+.bar{position:absolute;left:0;right:0;bottom:0;height:6px;background:var(--ln)}.bar i{display:block;height:100%;width:0;background:var(--tx)}
+.rc{position:absolute;top:10px;left:10px;background:var(--rec);color:var(--bg);font:700 13px var(--hd);padding:4px 10px;border-radius:999px;display:none}
 .chips{display:flex;gap:8px;overflow-x:auto;padding:2px 0}
-.chip{flex:none;width:42px;height:42px;min-height:42px;border-radius:0;padding:0;font:400 24px var(--hd);border:2px solid #F5F5F0;background:transparent;color:var(--mu);letter-spacing:0}
-.chip.cur{border-color:var(--rec);color:var(--rec);background:transparent}
+.chip{flex:none;width:44px;height:44px;min-height:44px;border-radius:14px;padding:0;font:700 18px var(--hd);border:none;background:var(--s);color:var(--mu)}
+.chip.cur{background:transparent;border:2px solid var(--tx);color:var(--tx)}
 .pills{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
-.pill{min-height:56px;font-size:30px;border-radius:0}
-.pill.on{background:#F5F5F0;color:#0E0E0E}
-.av{width:44px;height:44px;border-radius:0;flex:none;display:flex;align-items:center;justify-content:center;font:400 28px var(--hd);color:#0E0E0E}
+.pill{min-height:56px;font-size:22px;border-radius:14px}
+.pill.on{background:var(--tx);color:var(--bg);border-color:var(--tx)}
+.av{width:44px;height:44px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;font:700 20px var(--hd);color:var(--bg)}
 .turn{flex-direction:row;align-items:center;gap:12px}
-.center{display:flex;flex-direction:column;align-items:center;gap:8px;padding:6px 0}
-.center b{font:400 34px/1 var(--hd);letter-spacing:.06em}
-.recbtn,.stopbtn{width:92px;height:92px;min-height:92px;border-radius:50%;border:4px solid #0E0E0E;outline:3px solid #F5F5F0;padding:0;position:relative;display:block}
-.recbtn{background:var(--rec)}
-.recbtn::after{content:'';position:absolute;left:50%;top:50%;width:24px;height:24px;margin:-12px 0 0 -12px;border-radius:50%;background:#F5F5F0}
-.stopbtn{background:#0E0E0E;border-color:var(--rec)}
-.stopbtn i{display:block;width:30px;height:30px;background:var(--rec);margin:auto}
-.slate{display:grid;grid-template-columns:1fr .7fr 1.7fr;border:2px solid #F5F5F0}
-.slate>div{padding:6px 10px;border-right:2px solid #F5F5F0;min-width:0}.slate>div:last-child{border-right:0}
-.slate small{display:block;font:700 10px var(--mono);letter-spacing:.14em;color:var(--mu)}
-.slate b{display:block;font:400 26px/1.05 var(--hd);letter-spacing:.03em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.legend{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:14px}.legend span{display:flex;align-items:center;gap:6px}.legend b{width:12px;height:12px;display:inline-block}
+.center{display:flex;flex-direction:column;align-items:center;gap:12px;padding:6px 0}
+.recbtn{width:96px;height:96px;min-height:96px;border-radius:50%;background:var(--rec);border:none;box-shadow:0 0 0 8px #FF5A5F33;padding:0}
+.stopbtn{width:96px;height:96px;min-height:96px;border-radius:50%;background:var(--bg);border:4px solid var(--rec);padding:0}
+.stopbtn i{display:block;width:34px;height:34px;border-radius:8px;background:var(--rec);margin:auto}
+.legend{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:14px}.legend span{display:flex;align-items:center;gap:6px}.legend b{width:12px;height:12px;border-radius:4px;display:inline-block}
+input[type=range]{width:100%}
 details summary{cursor:pointer;color:var(--mu);font-size:14px;min-height:44px;display:flex;align-items:center}
-.cue{border:2px solid #F5F5F0;padding:12px;display:flex;flex-direction:column;gap:8px}
+.cue{background:var(--s);border:1px solid var(--ln);border-radius:16px;padding:12px;display:flex;flex-direction:column;gap:8px}
 .cue label{font-size:12px;color:var(--mu);display:flex;flex-direction:column;gap:4px;flex:1}
-.empty{text-align:center;color:var(--mu);padding:24px 8px;font-size:14px;border:2px dashed #4A4A45}
+.empty{text-align:center;color:var(--mu);padding:24px 8px;font-size:14px}
 .two{display:flex;flex-direction:column;gap:16px}
 .colA,.colB{display:flex;flex-direction:column;gap:16px;min-width:0}
-.tabs{display:grid;grid-template-columns:1fr 1fr;border:2px solid #F5F5F0}
-.tabs button{min-height:46px;border:none;border-radius:0;font-size:22px;color:var(--mu)}
-.tabs button.on{background:#F5F5F0;color:#0E0E0E}
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:var(--s);border:1px solid var(--ln);border-radius:16px;padding:4px}
+.tabs button{min-height:44px;border:none;background:transparent;border-radius:12px;font-size:15px;color:var(--mu)}
+.tabs button.on{background:var(--tx);color:var(--bg)}
 .grid{display:grid;grid-template-columns:1fr;gap:12px}
-.thumb{aspect-ratio:16/9;border:2px solid #F5F5F0;background:var(--s2) center/cover no-repeat}
+.thumb{aspect-ratio:16/9;border-radius:12px;background:var(--s2) center/cover no-repeat}
 .narrow{display:flex;flex-direction:column;gap:16px}
 @media (min-width:700px),(orientation:landscape) and (min-width:560px){
 html,body{font-size:17px}
@@ -76,7 +67,7 @@ html,body{font-size:17px}
 .two{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:24px;align-items:start}
 .colA.sticky{position:sticky;top:16px}
 .grid{grid-template-columns:repeat(auto-fill,minmax(300px,1fr))}
-h1{font-size:50px}
+h1{font-size:34px}
 .stage{max-height:calc(100vh - 150px)}
 .narrow{max-width:640px;margin:0 auto;width:100%}
 .tabs{max-width:460px}
@@ -88,7 +79,7 @@ h1{font-size:50px}
 <script>
 (function(){
 'use strict';
-var P=['#FFD400','#35C7E8','#FF8A1F','#8BE35B'];
+var P=['#FF8A65','#FFD166','#4FD1C5','#A99BFF'];
 var LEAD=2,TAIL=0.8;
 var app=document.getElementById('app');
 function $(s,el){return (el||document).querySelector(s);}
@@ -165,7 +156,7 @@ function playRange(v,from,to,items,onFrame,onEnd){
 function subHTML(c,t,col){
   var w=c.text.trim().split(/\s+/).filter(Boolean);if(!w.length)return '';
   var k=0;if(t>=c.start){var pr=Math.min(1,(t-c.start)/Math.max(0.3,c.end-c.start));k=Math.floor(pr*w.length+0.35);}
-  return w.map(function(x,i){return i<k?'<span style="color:#F5F5F0">'+esc(x)+'</span>':'<span>'+esc(x)+'</span>';}).join(' ');
+  return w.map(function(x,i){return i<k?'<span style="color:'+col+'">'+esc(x)+'</span>':'<span>'+esc(x)+'</span>';}).join(' ');
 }
 function segOf(c,dur){return {a:Math.max(0,c.start-LEAD),b:Math.min(dur||1e9,c.end+TAIL)};}
 function colOf(p,c){return P[(p.assign[c.char]||0)%4];}
@@ -179,7 +170,7 @@ function goto(view,pid,i){stopPlay();FIN.playing=false;S.view=view;if(pid)S.pid=
 function render(){var tk=++token;var f={home:vHome,lib:vLib,prep:vPrep,team:vTeam,seq:vSeq,fin:vFinal}[S.view];window.scrollTo(0,0);return Promise.resolve(f(tk));}
 
 /* ---------- accueil ---------- */
-function brand(){return '<div class="row" style="flex:none"><div class="av" style="background:#E5312B;border-radius:11px;width:36px;height:36px">'+ic('mic',20,'#0E0E0E')+'</div><h2 style="flex:6">Doublage</h2></div>';}
+function brand(){return '<div class="row" style="flex:none"><div class="av" style="background:#FF5A5F;border-radius:11px;width:36px;height:36px">'+ic('mic',20,'#16131E')+'</div><h2 style="flex:6">Doublage</h2></div>';}
 function tabsHTML(a){return '<div class="tabs"><button class="'+(a==='home'?'on':'')+'" data-act="tab" data-t="home">Extraits</button><button class="'+(a==='lib'?'on':'')+'" data-act="tab" data-t="lib">Mes doublages</button></div>';}
 var THUMB={};
 function thumb(p){
@@ -201,7 +192,7 @@ function vLib(){
     var d=done(p),n=p.cues.length,full=d===n;
     var who=p.persons.map(function(q){return esc(q.name);}).join(', ');
     return '<div class="card"><div class="thumb" data-th="'+p.id+'"></div><div class="ct">'+esc(p.title)+'</div><div class="note">'+(full?'Doublage complet':d+' séquence'+(d>1?'s':'')+' sur '+n)+' · '+who+'</div>'+
-      '<div class="row"><button class="pri sm" data-act="fin" data-id="'+p.id+'">'+ic('play',18,'#0E0E0E',true)+' Lecture</button>'+(full?'':'<button class="sm" data-act="resume" data-id="'+p.id+'">Continuer</button>')+'</div></div>';
+      '<div class="row"><button class="pri sm" data-act="fin" data-id="'+p.id+'">'+ic('play',18,'#16131E',true)+' Lecture</button>'+(full?'':'<button class="sm" data-act="resume" data-id="'+p.id+'">Continuer</button>')+'</div></div>';
   }).join('');
   app.innerHTML=brand()+tabsHTML('lib')+'<h1>Mes doublages</h1><p class="mu">Les extraits où au moins une séquence est enregistrée.</p>'+
     (cards?'<div class="grid">'+cards+'</div>':'<div class="empty">Aucun doublage enregistré pour l\u2019instant. Ajoute un extrait, puis enregistre au moins une séquence.</div>');
@@ -214,13 +205,13 @@ function vHome(){
     var st=n?(d+' séquence'+(d>1?'s':'')+' enregistrée'+(d>1?'s':'')+' sur '+n):'Répliques à préparer';
     return '<div class="card"><div class="ct">'+esc(p.title)+'</div><div class="note">'+st+'</div>'+
       '<div class="row"><button class="sm" data-act="prep" data-id="'+p.id+'">Répliques</button><button class="sm" data-act="team" data-id="'+p.id+'"'+(n?'':' disabled')+'>Doubler</button><button class="sm" data-act="fin" data-id="'+p.id+'"'+(d?'':' disabled')+'>Lecture</button>'+
-      '<button class="sm red" data-act="del" data-id="'+p.id+'" aria-label="Supprimer l’extrait">'+(S.confirm===p.id?'Sûr ?':ic('trash',18,'#E5312B'))+'</button></div></div>';
+      '<button class="sm red" data-act="del" data-id="'+p.id+'" aria-label="Supprimer l’extrait">'+(S.confirm===p.id?'Sûr ?':ic('trash',18,'#FF5A5F'))+'</button></div></div>';
   }).join('');
   app.innerHTML=brand()+tabsHTML('home')+
    '<h1>Tes extraits</h1><p class="mu">Charge un extrait, ajoute les répliques, puis doublez-les séquence par séquence.</p>'+
    (persist?'':'<div class="warn">La sauvegarde automatique n’est pas disponible ici : tes extraits disparaîtront si tu fermes la page.</div>')+
    (cards?'<div class="grid">'+cards+'</div>':'<div class="empty">Aucun extrait pour l\u2019instant.</div>')+
-   '<label class="btn pri">'+ic('plus',20,'#0E0E0E')+' Ajouter un extrait<input type="file" accept="video/*" id="addv" hidden></label>';
+   '<label class="btn pri">'+ic('plus',20,'#16131E')+' Ajouter un extrait<input type="file" accept="video/*" id="addv" hidden></label>';
 }
 
 /* ---------- préparation des répliques ---------- */
@@ -229,9 +220,9 @@ function vPrep(tk){
   var p=cur();if(!p)return goto('home');
   return videoUrl(p).then(function(url){
     if(tk!==token)return;
-    app.innerHTML='<div class="top"><button data-act="home" aria-label="Retour">'+ic('back',22,'#F5F5F0')+'</button><div style="flex:1"><input type="text" id="ttl" aria-label="Titre de l’extrait" value="'+esc(p.title)+'"></div></div>'+
+    app.innerHTML='<div class="top"><button data-act="home" aria-label="Retour">'+ic('back',22,'#F5F1EA')+'</button><div style="flex:1"><input type="text" id="ttl" aria-label="Titre de l’extrait" value="'+esc(p.title)+'"></div></div>'+
      '<div class="two"><div class="colA sticky"><div class="stage"><video id="v" controls playsinline preload="auto" src="'+url+'"></video></div>'+
-     '<div class="row"><button data-act="addcue">'+ic('plus',18,'#F5F5F0')+' Réplique ici</button><label class="btn" style="font-size:15px">Importer .srt<input type="file" accept=".srt,text/plain,application/x-subrip" id="srt" hidden></label></div>'+
+     '<div class="row"><button data-act="addcue">'+ic('plus',18,'#F5F1EA')+' Réplique ici</button><label class="btn" style="font-size:15px">Importer .srt<input type="file" accept=".srt,text/plain,application/x-subrip" id="srt" hidden></label></div>'+
      '<p class="note">Lance la vidéo, mets en pause là où le personnage commence à parler, puis touche « Réplique ici ». Écris ce qu’il doit dire. Si tu as un fichier de sous-titres (.srt), importe-le : les répliques se remplissent toutes seules.</p></div><div class="colB">'+
      '<h2>Personnages</h2><div id="chars"></div>'+
      '<h2>Répliques</h2><div id="cues"></div>'+
@@ -242,8 +233,8 @@ function vPrep(tk){
 }
 function renderChars(p){
   $('#chars').innerHTML='<div style="display:flex;flex-direction:column;gap:8px">'+p.chars.map(function(n,i){
-    return '<div class="row"><input type="text" data-f="char" data-ci="'+i+'" aria-label="Nom du personnage '+(i+1)+'" value="'+esc(n)+'">'+(p.chars.length>1?'<button class="sm" style="flex:none" data-act="rmchar" data-ci="'+i+'" aria-label="Retirer ce personnage">'+ic('x',18,'#F5F5F0')+'</button>':'')+'</div>';
-  }).join('')+'<button class="sm" data-act="addchar" style="align-self:flex-start">'+ic('plus',16,'#F5F5F0')+' Personnage</button></div>';
+    return '<div class="row"><input type="text" data-f="char" data-ci="'+i+'" aria-label="Nom du personnage '+(i+1)+'" value="'+esc(n)+'">'+(p.chars.length>1?'<button class="sm" style="flex:none" data-act="rmchar" data-ci="'+i+'" aria-label="Retirer ce personnage">'+ic('x',18,'#F5F1EA')+'</button>':'')+'</div>';
+  }).join('')+'<button class="sm" data-act="addchar" style="align-self:flex-start">'+ic('plus',16,'#F5F1EA')+' Personnage</button></div>';
 }
 function renderCues(p){
   var el=$('#cues');if(!el)return;
@@ -253,7 +244,7 @@ function renderCues(p){
       '<label>Début (s)<input type="number" step="0.1" inputmode="decimal" data-f="start" value="'+r1(c.start)+'"></label><button class="sm" style="flex:none" data-act="setstart" aria-label="Début = position actuelle">ici</button>'+
       '<label>Fin (s)<input type="number" step="0.1" inputmode="decimal" data-f="end" value="'+r1(c.end)+'"></label><button class="sm" style="flex:none" data-act="setend" aria-label="Fin = position actuelle">ici</button></div>'+
       '<div class="row"><select data-f="char" aria-label="Personnage">'+p.chars.map(function(n,j){return '<option value="'+j+'"'+(c.char===j?' selected':'')+'>'+esc(n)+'</option>';}).join('')+'</select>'+
-      '<button class="sm" style="flex:none" data-act="seekcue">Voir</button><button class="sm red" style="flex:none" data-act="delcue" aria-label="Supprimer la réplique">'+ic('trash',18,'#E5312B')+'</button></div>'+
+      '<button class="sm" style="flex:none" data-act="seekcue">Voir</button><button class="sm red" style="flex:none" data-act="delcue" aria-label="Supprimer la réplique">'+ic('trash',18,'#FF5A5F')+'</button></div>'+
       '<textarea data-f="text" aria-label="Texte de la réplique" placeholder="Ce que dit le personnage">'+esc(c.text)+'</textarea></div>';
   }).join('')+'</div>';
 }
@@ -285,7 +276,7 @@ function vTeam(){
   var p=cur();if(!p)return goto('home');
   if(!p.cues.length)return goto('prep');
   var n=p.persons.length;
-  app.innerHTML='<div class="narrow"><div class="top"><button data-act="home" aria-label="Retour">'+ic('back',22,'#F5F5F0')+'</button><span class="mu s" style="flex:1;text-align:right">'+esc(p.title)+'</span></div>'+
+  app.innerHTML='<div class="narrow"><div class="top"><button data-act="home" aria-label="Retour">'+ic('back',22,'#F5F1EA')+'</button><span class="mu s" style="flex:1;text-align:right">'+esc(p.title)+'</span></div>'+
    '<h1>Combien de personnes doublent ?</h1>'+
    '<div class="pills">'+[1,2,3,4].map(function(k){return '<button class="pill'+(k===n?' on':'')+'" data-act="n" data-n="'+k+'" aria-label="'+k+' personne'+(k>1?'s':'')+'">'+k+'</button>';}).join('')+'</div>'+
    '<p class="note">Cet extrait a '+p.chars.length+' personnage'+(p.chars.length>1?'s':'')+'. S’il y a moins de doubleurs, certains jouent plusieurs rôles.</p>'+
@@ -295,7 +286,7 @@ function vTeam(){
    (p.chars.length>1&&n>1?'<details><summary>Changer la répartition</summary><div style="display:flex;flex-direction:column;gap:8px">'+p.chars.map(function(c,ci){
      return '<div class="row"><span style="flex:1">'+esc(c)+'</span><select data-f="assign" data-ci="'+ci+'" aria-label="Doubleur pour '+esc(c)+'" style="flex:1">'+p.persons.map(function(q,i){return '<option value="'+i+'"'+((p.assign[ci]||0)===i?' selected':'')+'>'+esc(q.name)+'</option>';}).join('')+'</select></div>';
    }).join('')+'</div></details>':'')+
-   '<button class="pri" data-act="go">C\u2019est parti '+ic('chk',20,'#0E0E0E')+'</button></div>';
+   '<button class="pri" data-act="go">C\u2019est parti '+ic('chk',20,'#16131E')+'</button></div>';
 }
 
 /* ---------- séquence ---------- */
@@ -304,8 +295,8 @@ var STREAM=null,MICBLOCK=false;
 function chipsHTML(p,active){
   return '<div class="chips">'+p.cues.map(function(c,j){
     var col=colOf(p,c);var cls='chip'+(j===active?' cur':'');
-    var st=(c.rec&&j!==active)?' style="background:'+col+';border-color:'+col+';color:#0E0E0E"':'';
-    return '<button class="'+cls+'" data-act="jump" data-j="'+j+'" aria-label="Séquence '+(j+1)+(c.rec?', enregistrée':'')+'"'+st+'>'+(c.rec&&j!==active?ic('chk',20,'#0E0E0E'):(j+1))+'</button>';
+    var st=(c.rec&&j!==active)?' style="background:'+col+';color:#16131E"':'';
+    return '<button class="'+cls+'" data-act="jump" data-j="'+j+'" aria-label="Séquence '+(j+1)+(c.rec?', enregistrée':'')+'"'+st+'>'+(c.rec&&j!==active?ic('chk',20,'#16131E'):(j+1))+'</button>';
   }).join('')+'</div>';
 }
 function vSeq(tk){
@@ -315,11 +306,10 @@ function vSeq(tk){
   return videoUrl(p).then(function(url){
     if(tk!==token)return;
     SQ.mode=c.rec?'review':'ready';SQ.msg=MICBLOCK?micMsg():'';SQ.stop=null;
-    app.innerHTML='<div class="top"><button data-act="totem" aria-label="Retour">'+ic('back',22,'#F5F5F0')+'</button><span class="mu s" style="flex:1">'+esc(p.title)+'</span><b style="font:700 16px var(--hd)">Séquence '+(S.i+1)+' sur '+p.cues.length+'</b></div>'+
+    app.innerHTML='<div class="top"><button data-act="totem" aria-label="Retour">'+ic('back',22,'#F5F1EA')+'</button><span class="mu s" style="flex:1">'+esc(p.title)+'</span><b style="font:700 16px var(--hd)">Séquence '+(S.i+1)+' sur '+p.cues.length+'</b></div>'+
      chipsHTML(p,S.i)+
      '<div class="two"><div class="colA"><div class="stage"><video id="v" playsinline muted preload="auto" src="'+url+'"></video><div class="rc" id="rc">REC</div><div class="ov"><span class="tag" id="tg" style="background:'+col+'">'+esc(pname(p,c))+' · '+esc(p.chars[c.char]||'')+'</span><div class="sub" id="sb"></div></div><div class="bar"><i id="pg"></i></div></div></div><div class="colB">'+
-     '<div class="slate"><div><small>SCÈNE</small><b>'+(S.i+1)+' / '+p.cues.length+'</b></div><div><small>PRISE</small><b id="tk">1</b></div><div><small>VOIX</small><b style="color:'+col+'">'+esc(pname(p,c))+'</b></div></div>'+
-     '<div class="note">'+esc(p.chars[c.char]||'')+' · Dis la réplique quand elle se colore.</div>'+
+     '<div class="card turn"><div class="av" style="background:'+col+'">'+(pi+1)+'</div><div><b style="font:700 18px var(--hd)">C’est au tour de '+esc(pname(p,c))+'</b><div class="note">Dis la réplique quand elle se colore.</div></div></div>'+
      '<div id="ctl"></div><div id="msg" class="note"></div></div></div>';
     var v=$('#v');var dur=0;
     meta(v).then(function(){dur=v.duration;var sg=segOf(c,dur);return seek(v,sg.a).then(function(){frame(sg.a);});});
@@ -335,27 +325,26 @@ function frame(t){
 }
 function ctl(){
   var el=$('#ctl');if(!el)return;var p=cur();var c=p.cues[S.i];var last=S.i>=p.cues.length-1;
-  var tkEl=$('#tk');if(tkEl)tkEl.textContent=c.rec?(c.takes||1):((c.takes||0)+1);
   var imp='<label class="btn sm">Importer ma voix<input type="file" accept="audio/*,video/*" id="imp" hidden></label>';
   var h='';
   if(SQ.mode==='rec'){
-    h='<div class="center"><button class="stopbtn" data-act="stoprec" aria-label="Arrêter l’enregistrement"><i></i></button><b>Coupez !</b><span class="note">Appuie pour arrêter</span></div>';
+    h='<div class="center"><button class="stopbtn" data-act="stoprec" aria-label="Arrêter l’enregistrement"><i></i></button><b style="font:700 17px var(--hd)">Appuie pour arrêter</b></div>';
   }else if(SQ.mode==='play'){
     h='<button data-act="stopplay">Arrêter</button>';
   }else if(SQ.mode==='review'){
-    h='<button data-act="listen">'+ic('play',20,'#F5F5F0',true)+' Réécouter avec la scène</button>'+
+    h='<button data-act="listen">'+ic('play',20,'#F5F1EA',true)+' Réécouter avec la scène</button>'+
       '<div class="note">Décalage de la voix : '+((c.off||0)>=0?'+':'')+(c.off||0).toFixed(1)+' s (avance ou recule la voix si elle n\u2019est pas calée)</div><div class="row"><button class="sm" data-act="nud" data-d="-1">−1 s</button><button class="sm" data-act="nud" data-d="-0.1">−0,1</button><button class="sm" data-act="nud" data-d="0.1">+0,1</button><button class="sm" data-act="nud" data-d="1">+1 s</button></div>'+
       '<button class="pri" data-act="next">'+(last?'Terminer, voir le résultat':'Valider, séquence suivante')+'</button>'+
-      '<button class="red" data-act="redo">'+ic('redo',20,'#E5312B')+' Refaire cette séquence</button>';
+      '<button class="red" data-act="redo">'+ic('redo',20,'#FF5A5F')+' Refaire cette séquence</button>';
   }else{
-    h='<div class="center"><button class="recbtn" data-act="rec" aria-label="Enregistrer ma voix"></button><b>Moteur !</b><span class="note">Silence, on tourne. Appuie pour enregistrer.</span></div>'+
+    h='<div class="center"><button class="recbtn" data-act="rec" aria-label="Enregistrer ma voix"></button><b style="font:700 17px var(--hd)">Appuie pour enregistrer</b></div>'+
       '<div class="row"><button class="sm" data-act="preview">Voir la scène</button>'+imp+(c.rec?'<button class="sm" data-act="keepold">Garder la prise</button>':'')+'</div>';
   }
   el.innerHTML=h;var m=$('#msg');if(m)m.textContent=SQ.msg||'';
 }
 function saveVoice(p,c,blob){
   return put('blob','r:'+p.id+':'+c.id,blob).then(function(){
-    delete BUF[p.id+':'+c.id];c.rec=true;c.off=0;c.takes=(c.takes||0)+1;return saveProj(p);
+    delete BUF[p.id+':'+c.id];c.rec=true;c.off=0;return saveProj(p);
   }).then(function(){return getBuf(p,c);}).then(function(){SQ.mode='review';SQ.msg='';},function(){
     c.rec=false;saveProj(p);SQ.mode='ready';SQ.msg='Ce fichier audio n’est pas lisible. Refais l’enregistrement ou importe un autre fichier.';
   });
@@ -398,13 +387,13 @@ function vFinal(tk){
   var p=cur();if(!p)return goto('home');
   return videoUrl(p).then(function(url){
     if(tk!==token)return;
-    app.innerHTML='<div class="top"><button data-act="lib" aria-label="Retour à mes doublages">'+ic('back',22,'#F5F5F0')+'</button><span class="mu s" style="flex:1;text-align:right">'+esc(p.title)+'</span></div>'+
+    app.innerHTML='<div class="top"><button data-act="lib" aria-label="Retour à mes doublages">'+ic('back',22,'#F5F1EA')+'</button><span class="mu s" style="flex:1;text-align:right">'+esc(p.title)+'</span></div>'+
      '<h1>Ton doublage, avec toutes les voix</h1><div class="two"><div class="colA">'+
      '<div class="stage"><video id="v" playsinline preload="auto" src="'+url+'"></video><div class="ov" id="ov" style="display:none"><span class="tag" id="tg"></span><div class="sub" id="sb"></div></div><div class="bar"><i id="pg"></i></div></div>'+
      '<input type="range" id="sk" min="0" max="1" step="0.1" value="0" aria-label="Position dans l\u2019extrait"></div><div class="colB">'+
      '<p class="note">Touche une séquence pour l’écouter ou la refaire.</p>'+chipsHTML(p,-1)+
      '<div class="legend">'+p.persons.map(function(q,i){return '<span><b style="background:'+P[i%4]+'"></b>'+esc(q.name)+'</span>';}).join('')+'</div>'+
-     '<div class="row"><button style="flex:none;width:56px;padding:0" data-act="frestart" aria-label="Depuis le début">'+ic('redo',22,'#F5F5F0')+'</button><button class="pri" id="fp" data-act="fplay">'+ic('play',22,'#0E0E0E',true)+' Lecture</button></div><div id="msg" class="note"></div></div></div>';
+     '<div class="row"><button style="flex:none;width:56px;padding:0" data-act="frestart" aria-label="Depuis le début">'+ic('redo',22,'#F5F1EA')+'</button><button class="pri" id="fp" data-act="fplay">'+ic('play',22,'#16131E',true)+' Lecture</button></div><div id="msg" class="note"></div></div></div>';
     var v=$('#v');v.muted=!p.keep;
     meta(v).then(function(){$('#sk').max=v.duration||1;fdraw(0);});
   });
@@ -415,7 +404,7 @@ function fdraw(t){
   if(c){ov.style.display='flex';var col=colOf(p,c);var tg=$('#tg');tg.style.background=col;tg.textContent=pname(p,c)+' · '+(p.chars[c.char]||'')+(c.rec?'':' · voix manquante');$('#sb').innerHTML=subHTML(c,t,col);}else{ov.style.display='none';}
   var d=v.duration||1;$('#pg').style.width=(t/d*100)+'%';$('#sk').value=t;
 }
-function fbtn(playing){var b=$('#fp');if(b)b.innerHTML=playing?ic('x',22,'#0E0E0E')+' Arrêter':ic('play',22,'#0E0E0E',true)+' Lecture';}
+function fbtn(playing){var b=$('#fp');if(b)b.innerHTML=playing?ic('x',22,'#16131E')+' Arrêter':ic('play',22,'#16131E',true)+' Lecture';}
 function fplay(from){
   var p=cur();var v=$('#v');var d=v.duration||0;if(from>=d-0.2)from=0;
   var jobs=p.cues.filter(function(c){return c.rec;}).map(function(c){return getBuf(p,c).then(function(buf){return {buf:buf,at:segOf(c,d).a+(c.off||0)};}).catch(function(){return null;});});
